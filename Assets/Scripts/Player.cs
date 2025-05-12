@@ -73,7 +73,7 @@ public class Player : MonoBehaviour
         scoreClip = GM.Instance.scoreSound;
 
         playerAudio = GetComponent<AudioSource>();
-        playerAudio.clip = scoreClip;
+        //playerAudio.clip = scoreClip;
 
         UpdateScoreUI();
         InitInventoryUI();
@@ -102,9 +102,9 @@ public class Player : MonoBehaviour
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
-        Debug.Log(mouseY);
+        //Debug.Log(mouseY);
         xRotation -= mouseY;
-        Debug.Log(xRotation);
+        //Debug.Log(xRotation);
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
         playerCamera.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
@@ -126,11 +126,13 @@ public class Player : MonoBehaviour
     {
         InventoryObject inventoryObj = other.GetComponent<InventoryObject>();
 
+        // si inventaire object
         if (inventoryObj != null)
         {
             inventoryObj.isInInventory = true;
             AddToInventory(inventoryObj);
         }
+        // si score object
         else
         {
             ScoreObject scoreObj = other.GetComponent<ScoreObject>();
@@ -138,6 +140,7 @@ public class Player : MonoBehaviour
             if (scoreObj != null)
             {
                 AddScore(scoreObj.score);
+                playerAudio.clip = scoreClip;
                 playerAudio.Play();
                 scoreObj.destroyCoroutine = null;
                 Destroy(scoreObj.gameObject);
